@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:email_validator/email_validator.dart';
-
+import 'package:skenain/features/auth/presentation/widgets/custom_button.dart';
+import 'package:skenain/features/auth/presentation/widgets/custom_text_field.dart';
 import '../providers/auth_provider.dart';
 import '../widgets/auth_header.dart';
-import '../widgets/custom_text_field.dart';
-import '../widgets/custom_button.dart';
 import '../widgets/loading_overlay.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -104,8 +103,9 @@ class _RegisterPageState extends State<RegisterPage> {
                     keyboardType: TextInputType.emailAddress,
                     validator: (v) {
                       if (v?.isEmpty ?? true) return 'Email wajib diisi';
-                      if (!EmailValidator.validate(v!))
+                      if (!EmailValidator.validate(v!)) {
                         return 'Format email salah';
+                      }
                       return null;
                     },
                   ),
@@ -173,7 +173,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         child: const Text(
                           'Masuk',
                           style: TextStyle(
-                            color: Color(0xFF5D4037), // Coklat Earth Tone
+                            color: Color(0xFF5D4037),
                             fontWeight: FontWeight.bold,
                           ),
                         ),
