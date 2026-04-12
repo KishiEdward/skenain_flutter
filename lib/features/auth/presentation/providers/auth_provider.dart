@@ -187,6 +187,33 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
+  // Resend email verifikasi
+  Future<void> resendVerificationEmail() async {
+    await _firebaseUser?.sendEmailVerification();
+  }
+
+  Future<bool> checkEmailVerified() async {
+    await _firebaseUser?.reload();
+    _firebaseUser = _auth.currentUser;
+    
+    if (_firebaseUser?.emailVerified ?? false) {
+      return await _verifyTokenToBackend();
+    }
+    return false;
+  }
+
+  // Logout
+  Future<void> logout() async {
+    await _auth.signOut();
+    await _googleSignIn.signOut();
+    await SecureStorageService.clearAll(); 
+    
+    _firebaseUser = null;
+    _backendToken = null;
+    _status = AuthStatus.unauthenticated;
+    notifyListeners();
+  }
+
   // Private helper
   void _setLoading() {
     _status = AuthStatus.loading;
