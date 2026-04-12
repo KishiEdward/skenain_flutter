@@ -36,7 +36,30 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   Future<void> _register() async {
-    // Logika pendaftaran akan kita tambahkan di Commit 4
+    // Validasi form sebelum mengirim ke provider
+    if (!_formKey.currentState!.validate()) return;
+
+    final auth = context.read<AuthProvider>();
+    final success = await auth.register(
+      name: _nameCtrl.text.trim(),
+      email: _emailCtrl.text.trim(),
+      password: _passCtrl.text,
+    );
+
+    if (!mounted) return;
+
+    if (success) {
+      // Navigasi ke halaman instruksi verifikasi email
+      Navigator.pushReplacementNamed(context, '/verify-email');
+    } else {
+      // Munculkan pesan error dari provider (warna merah bata earth tone)
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(auth.errorMessage ?? 'Pendaftaran gagal'),
+          backgroundColor: const Color(0xFFB3261E), 
+        ),
+      );
+    }
   }
 
   @override
