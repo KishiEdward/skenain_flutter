@@ -63,6 +63,68 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
+  // alur konfirasi email setelah register
+  Future<bool> loginAfterEmailVerification() async {
+    _setLoading();
+    try {
+      // Refresh status user dari server Firebase
+      await _firebaseUser?.reload();
+      _firebaseUser = _auth.currentUser;
+
+      // Jika ternyata masih belum diverifikasi
+      if (!(_firebaseUser?.emailVerified ?? false)) {
+        _status = AuthStatus.emailNotVerified;
+        notifyListeners();
+        return false;
+      }
+
+      // Re-login otomatis menggunakan data sementara untuk dapat fresh session & token
+      if (_tempEmail != null && _tempPassword != null) {
+        final credential = await _auth.signInWithEmailAndPassword(
+          email: _tempEmail!,
+          password: _tempPassword!,
+        );
+        _firebaseUser = credential.user;
+        _tempEmail = null;
+        _tempPassword = null;
+      }
+
+      // Lanjut tukar token ke Golang
+      return await _verifyTokenToBackend();
+    } catch (e) {
+      _setError('Gagal sinkronisasi data: $e');
+      return false;
+    }
+  }
+
+  // alur verify token
+  Future<bool> _verifyTokenToBackend() async {
+    try {
+      // Ambil ID Token dari Firebase (yang umurnya cuma 1 jam)
+      final firebaseToken = await _firebaseUser?.getIdToken();
+      
+      // POST token tersebut ke backend Golang kamu lewat DioClient
+      final response = await DioClient.instance.post(
+        ApiConstants.verifyToken,
+        data: {'firebase_token': firebaseToken},
+      );
+
+      // Ambil Access Token (JWT) balasan dari Golang
+      final data = response.data['data'] as Map<String, dynamic>;
+      _backendToken = data['access_token'] as String;
+
+      // Simpan aman di Brankas (Secure Storage) HP pengguna
+      await SecureStorageService.saveToken(_backendToken!);
+      
+      _status = AuthStatus.authenticated;
+      notifyListeners();
+      return true;
+    } catch (e) {
+      _setError('Gagal verifikasi di server backend. Pastikan server Golang menyala.');
+      return false;
+    }
+  }
+
   // Private helper
   void _setLoading() {
     _status = AuthStatus.loading;
