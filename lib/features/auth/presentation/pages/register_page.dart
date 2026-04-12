@@ -59,7 +59,28 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
                 const SizedBox(height: 32),
                 
-                
+                // Form Nama
+                  CustomTextField(
+                    label: 'Nama Lengkap',
+                    hint: 'Masukkan nama lengkap',
+                    controller: _nameCtrl,
+                    validator: (v) => (v?.isEmpty ?? true) ? 'Nama wajib diisi' : null,
+                  ),
+                  const SizedBox(height: 16),
+                  
+                  // Form Email
+                  CustomTextField(
+                    label: 'Email',
+                    hint: 'contoh@email.com',
+                    controller: _emailCtrl,
+                    keyboardType: TextInputType.emailAddress,
+                    validator: (v) {
+                      if (v?.isEmpty ?? true) return 'Email wajib diisi';
+                      if (!EmailValidator.validate(v!)) return 'Format email salah';
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 16),
               ],
             ),
           ),
