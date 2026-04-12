@@ -31,7 +31,7 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
-  
+ 
   Future<void> _loginEmail() async {}
   Future<void> _loginGoogle() async {}
   void _handleLoginResult(bool ok, AuthProvider auth) {}
@@ -62,6 +62,60 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   const SizedBox(height: 32),
                   
+                  CustomTextField(
+                    label: 'Email',
+                    hint: 'contoh@email.com',
+                    controller: _emailCtrl,
+                    keyboardType: TextInputType.emailAddress,
+                    validator: (v) {
+                      if (v?.isEmpty ?? true) return 'Email wajib diisi';
+                      if (!EmailValidator.validate(v!)) {
+                        return 'Format email salah';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  
+                  CustomTextField(
+                    label: 'Password',
+                    hint: 'Masukkan password',
+                    controller: _passCtrl,
+                    isPassword: !_showPass,
+                    validator: (v) => (v?.isEmpty ?? true) ? 'Password wajib diisi' : null,
+                  ),
+                  
+                  // Baris Tombol Mata dan Lupa Password
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      TextButton.icon(
+                        onPressed: () => setState(() => _showPass = !_showPass),
+                        icon: Icon(
+                          _showPass ? Icons.visibility_off : Icons.visibility,
+                          color: Colors.grey.shade600,
+                          size: 18,
+                        ),
+                        label: Text(
+                          _showPass ? 'Sembunyikan' : 'Lihat',
+                          style: TextStyle(color: Colors.grey.shade600, fontSize: 12),
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () => _showForgotPasswordDialog(context),
+                        child: const Text(
+                          'Lupa Password?',
+                          style: TextStyle(
+                            color: Color(0xFF8D6E63),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 13,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+
                   
 
                 ],
