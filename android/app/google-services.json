@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "638138242347",
+    "project_id": "verifikasi-email-7bbb9",
+    "storage_bucket": "verifikasi-email-7bbb9.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:638138242347:android:b1a818b6e7bff12c3ce16e",
+        "android_client_info": {
+          "package_name": "com.example.skenain"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "638138242347-ie9n5slgj0ftmcbh0hlk2gfcr2hnknru.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDxSCaNX7IZ36ienGKVy_6f_1WgBo6ovR4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "638138242347-ie9n5slgj0ftmcbh0hlk2gfcr2hnknru.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:638138242347:android:e5ff5bc554ad42db3ce16e",
+        "android_client_info": {
+          "package_name": "com.verifikasi_email123.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "638138242347-ie9n5slgj0ftmcbh0hlk2gfcr2hnknru.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDxSCaNX7IZ36ienGKVy_6f_1WgBo6ovR4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "638138242347-ie9n5slgj0ftmcbh0hlk2gfcr2hnknru.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
