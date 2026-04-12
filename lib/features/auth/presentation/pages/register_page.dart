@@ -81,6 +81,42 @@ class _RegisterPageState extends State<RegisterPage> {
                     },
                   ),
                   const SizedBox(height: 16),
+                  // Form Password
+                  CustomTextField(
+                    label: 'Password',
+                    hint: 'Minimal 8 karakter',
+                    controller: _passCtrl,
+                    isPassword: !_showPass,
+                    validator: (v) => (v?.length ?? 0) < 8 ? 'Password minimal 8 karakter' : null,
+                  ),
+                  const SizedBox(height: 16),
+                  
+                  // Form Konfirmasi Password
+                  CustomTextField(
+                    label: 'Konfirmasi Password',
+                    hint: 'Ulangi password',
+                    controller: _pass2Ctrl,
+                    isPassword: !_showPass,
+                    validator: (v) => v != _passCtrl.text ? 'Password tidak cocok' : null,
+                  ),
+                  
+                  // Tombol Mata untuk Show/Hide Password
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: TextButton.icon(
+                      onPressed: () => setState(() => _showPass = !_showPass),
+                      icon: Icon(
+                        _showPass ? Icons.visibility_off : Icons.visibility,
+                        color: Colors.grey.shade600,
+                        size: 18,
+                      ),
+                      label: Text(
+                        _showPass ? 'Sembunyikan Password' : 'Lihat Password',
+                        style: TextStyle(color: Colors.grey.shade600, fontSize: 12),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
               ],
             ),
           ),
