@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+import 'package:google_sign_in/google_sign_in.dart' as g_auth;
 import '../../../../core/constants/api_constants.dart';
 import '../../../../core/services/dio_client.dart';
 import '../../../../core/services/secure_storage.dart';
@@ -17,7 +17,7 @@ enum AuthStatus {
 
 class AuthProvider extends ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
+  final g_auth.GoogleSignIn _googleSignIn = g_auth.GoogleSignIn();
 
   // State Internal
   AuthStatus _status = AuthStatus.initial;
@@ -195,7 +195,7 @@ class AuthProvider extends ChangeNotifier {
   Future<bool> checkEmailVerified() async {
     await _firebaseUser?.reload();
     _firebaseUser = _auth.currentUser;
-    
+
     if (_firebaseUser?.emailVerified ?? false) {
       return await _verifyTokenToBackend();
     }
@@ -206,8 +206,8 @@ class AuthProvider extends ChangeNotifier {
   Future<void> logout() async {
     await _auth.signOut();
     await _googleSignIn.signOut();
-    await SecureStorageService.clearAll(); 
-    
+    await SecureStorageService.clearAll();
+
     _firebaseUser = null;
     _backendToken = null;
     _status = AuthStatus.unauthenticated;
