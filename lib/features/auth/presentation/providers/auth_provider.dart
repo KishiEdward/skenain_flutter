@@ -36,21 +36,25 @@ class AuthProvider extends ChangeNotifier {
   bool get isLoading => _status == AuthStatus.loading;
 
   // Alur register
-  Future<bool> register({required String name, required String email, required String password}) async {
+  Future<bool> register({
+    required String name,
+    required String email,
+    required String password,
+  }) async {
     _setLoading();
     try {
       final credential = await _auth.createUserWithEmailAndPassword(
-        email: email, 
+        email: email,
         password: password,
       );
       _firebaseUser = credential.user;
-      
+
       await _firebaseUser?.updateDisplayName(name);
       await _firebaseUser?.sendEmailVerification();
 
       _tempEmail = email;
       _tempPassword = password;
-      
+
       _status = AuthStatus.emailNotVerified;
       notifyListeners();
       return true;
@@ -102,7 +106,7 @@ class AuthProvider extends ChangeNotifier {
     try {
       // Ambil ID Token dari Firebase (yang umurnya cuma 1 jam)
       final firebaseToken = await _firebaseUser?.getIdToken();
-      
+
       // POST token tersebut ke backend Golang kamu lewat DioClient
       final response = await DioClient.instance.post(
         ApiConstants.verifyToken,
@@ -115,12 +119,70 @@ class AuthProvider extends ChangeNotifier {
 
       // Simpan aman di Brankas (Secure Storage) HP pengguna
       await SecureStorageService.saveToken(_backendToken!);
-      
+
       _status = AuthStatus.authenticated;
       notifyListeners();
       return true;
     } catch (e) {
-      _setError('Gagal verifikasi di server backend. Pastikan server Golang menyala.');
+      _setError(
+        'Gagal verifikasi di server backend. Pastikan server Golang menyala.',
+      );
+      return false;
+    }
+  }
+
+  // Login dengan email
+  Future<bool> loginWithEmail({
+    required String email,
+    required String password,
+  }) async {
+    _setLoading();
+    try {
+      final credential = await _auth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      _firebaseUser = credential.user;
+
+      if (!(_firebaseUser?.emailVerified ?? false)) {
+        _status = AuthStatus.emailNotVerified;
+        notifyListeners();
+        return false;
+      }
+
+      return await _verifyTokenToBackend();
+    } on FirebaseAuthException catch (e) {
+      _setError(_mapFirebaseError(e.code));
+      return false;
+    } catch (e) {
+      _setError('Terjadi kesalahan: $e');
+      return false;
+    }
+  }
+
+  // Login dengan google
+  Future<bool> loginWithGoogle() async {
+    _setLoading();
+    try {
+      final googleUser = await _googleSignIn.signIn();
+      if (googleUser == null) {
+        _setError('Login Google dibatalkan');
+        return false;
+      }
+
+      final googleAuth = await googleUser.authentication;
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      final userCred = await _auth.signInWithCredential(credential);
+      _firebaseUser = userCred.user;
+
+      // Google login, email otomatis terverifikasi
+      return await _verifyTokenToBackend();
+    } catch (e) {
+      _setError('Gagal login dengan Google: $e');
       return false;
     }
   }
@@ -139,13 +201,13 @@ class AuthProvider extends ChangeNotifier {
   }
 
   String _mapFirebaseError(String code) => switch (code) {
-        'email-already-in-use' => 'Email sudah terdaftar. Gunakan email lain.',
-        'user-not-found' => 'Akun tidak ditemukan. Silakan daftar.',
-        'wrong-password' => 'Password salah. Coba lagi.',
-        'invalid-email' => 'Format email tidak valid.',
-        'weak-password' => 'Password terlalu lemah. Minimal 6 karakter.',
-        'invalid-credential' => 'Kredensial tidak valid atau salah.',
-        'network-request-failed' => 'Tidak ada koneksi internet.',
-        _ => 'Terjadi kesalahan ($code). Coba lagi.',
-      };
+    'email-already-in-use' => 'Email sudah terdaftar. Gunakan email lain.',
+    'user-not-found' => 'Akun tidak ditemukan. Silakan daftar.',
+    'wrong-password' => 'Password salah. Coba lagi.',
+    'invalid-email' => 'Format email tidak valid.',
+    'weak-password' => 'Password terlalu lemah. Minimal 6 karakter.',
+    'invalid-credential' => 'Kredensial tidak valid atau salah.',
+    'network-request-failed' => 'Tidak ada koneksi internet.',
+    _ => 'Terjadi kesalahan ($code). Coba lagi.',
+  };
 }
