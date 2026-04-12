@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart' as g_auth;
+import 'package:google_sign_in/google_sign_in.dart';
 import '../../../../core/constants/api_constants.dart';
 import '../../../../core/services/dio_client.dart';
 import '../../../../core/services/secure_storage.dart';
@@ -17,7 +17,7 @@ enum AuthStatus {
 
 class AuthProvider extends ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final g_auth.GoogleSignIn _googleSignIn = g_auth.GoogleSignIn();
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   // State Internal
   AuthStatus _status = AuthStatus.initial;
