@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../widgets/product_cart.dart';
 
 import '../providers/product_provider.dart';
 
@@ -63,41 +64,20 @@ class _DashboardPageState extends State<DashboardPage> {
           child: Text('Belum ada produk yang tersedia.', style: TextStyle(fontSize: 16)),
         ),
         
-      // 4. State: Sukses! Tampilkan List Produk
+      // 4. State: Tampilkan List Produk
       _ => ListView.builder(
           padding: const EdgeInsets.all(16),
           itemCount: provider.products.length,
           itemBuilder: (context, index) {
             final product = provider.products[index];
-            return Card(
-              margin: const EdgeInsets.only(bottom: 16),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-              child: ListTile(
-                contentPadding: const EdgeInsets.all(16),
-                leading: Container(
-                  width: 60,
-                  height: 60,
-                  decoration: BoxDecoration(
-                    color: Colors.grey.shade200,
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: const Icon(Icons.image, color: Colors.grey), 
-                ),
-                title: Text(
-                  product.name, 
-                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                ),
-                subtitle: Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
-                  child: Text(
-                    'Rp ${product.price.toStringAsFixed(0)}', 
-                    style: const TextStyle(color: Color(0xFF8D6E63), fontWeight: FontWeight.bold),
-                  ),
-                ),
-                trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-                onTap: () {
-                },
-              ),
+            return ProductCard(
+              product: product,
+              onTap: () {
+                // Nanti navigasi ke halaman Detail Produk di sini
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Klik produk: ${product.name}')),
+                );
+              },
             );
           },
         ),
