@@ -14,8 +14,6 @@ class _DashboardPageState extends State<DashboardPage> {
   @override
   void initState() {
     super.initState();
-    // Memerintahkan Provider untuk "Fetch Data" ke Golang 
-    // sesaat setelah halaman ini selesai digambar pertama kali
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<ProductProvider>().fetchProducts();
     });
@@ -23,14 +21,13 @@ class _DashboardPageState extends State<DashboardPage> {
 
   @override
   Widget build(BuildContext context) {
-    // Memantau (watch) segala perubahan state di ProductProvider
     final provider = context.watch<ProductProvider>();
 
     return Scaffold(
-      backgroundColor: Colors.grey.shade50, // Warna latar abu-abu terang
+      backgroundColor: Colors.grey.shade50,
       appBar: AppBar(
         title: const Text('Dashboard Produk', style: TextStyle(color: Colors.white)),
-        backgroundColor: const Color(0xFF5D4037), // Coklat Earth Tone
+        backgroundColor: const Color(0xFF5D4037),
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh, color: Colors.white),
@@ -38,14 +35,11 @@ class _DashboardPageState extends State<DashboardPage> {
           ),
         ],
       ),
-      // 8.4 UI Merespons State dengan switch
       body: _buildBody(provider),
     );
   }
 
-  /// Fungsi untuk merespons State dengan menggunakan switch (Dart 3)
   Widget _buildBody(ProductProvider provider) {
-    // Logika Switch: "Berdasarkan kondisi provider, tampilkan UI yang sesuai"
     return switch (provider) {
       // 1. State: Sedang Loading
       _ when provider.isLoading => const Center(
@@ -87,7 +81,6 @@ class _DashboardPageState extends State<DashboardPage> {
                     color: Colors.grey.shade200,
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  // Nanti kita ganti dengan gambar asli pakai Image.network
                   child: const Icon(Icons.image, color: Colors.grey), 
                 ),
                 title: Text(
@@ -95,7 +88,7 @@ class _DashboardPageState extends State<DashboardPage> {
                   style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                 ),
                 subtitle: Padding(
-                  padding: const EdgeInsets.only(top: 8.0), // <--- INI BIANG KEROKNYA SUDAH DIPERBAIKI
+                  padding: const EdgeInsets.only(top: 8.0),
                   child: Text(
                     'Rp ${product.price.toStringAsFixed(0)}', 
                     style: const TextStyle(color: Color(0xFF8D6E63), fontWeight: FontWeight.bold),
@@ -103,7 +96,6 @@ class _DashboardPageState extends State<DashboardPage> {
                 ),
                 trailing: const Icon(Icons.arrow_forward_ios, size: 16),
                 onTap: () {
-                  // Nanti untuk navigasi ke halaman Detail
                 },
               ),
             );
