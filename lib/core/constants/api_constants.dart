@@ -4,7 +4,7 @@ class ApiConstants {
   static const String baseUrl = 'http://localhost:8080/v1';
 
   // Auth endpoints
-  static const String verifyToken = '/auth/verify-token';
+  static const String verifyToken = '/auth/verify';
 
   // Product endpoints
   static const String products = '/products';

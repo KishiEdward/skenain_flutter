@@ -17,7 +17,10 @@ enum AuthStatus {
 
 class AuthProvider extends ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
+  final GoogleSignIn _googleSignIn = GoogleSignIn(
+    clientId:
+        '638138242347-ie9n5slgj0ftmcbh0hlk2gfcr2hnknru.apps.googleusercontent.com',
+  );
 
   // State Internal
   AuthStatus _status = AuthStatus.initial;
@@ -27,6 +30,26 @@ class AuthProvider extends ChangeNotifier {
 
   String? _tempEmail;
   String? _tempPassword;
+
+  AuthProvider() {
+    _checkCurrentUser();
+  }
+
+  void _checkCurrentUser() {
+    _firebaseUser = _auth.currentUser;
+
+    if (_firebaseUser == null) {
+      // Jika tidak ada user yang login, arahkan ke halaman Login
+      _status = AuthStatus.unauthenticated;
+    } else if (!(_firebaseUser!.emailVerified)) {
+      // Jika login tapi email belum diverifikasi
+      _status = AuthStatus.emailNotVerified;
+    } else {
+      // Jika sudah login dan aman
+      _status = AuthStatus.authenticated;
+    }
+    notifyListeners(); // Teriakkan perubahan ini ke AuthGuard!
+  }
 
   // Getters (Untuk dibaca oleh UI)
   AuthStatus get status => _status;
@@ -105,7 +128,7 @@ class AuthProvider extends ChangeNotifier {
   Future<bool> _verifyTokenToBackend() async {
     try {
       // Ambil ID Token dari Firebase (yang umurnya cuma 1 jam)
-      final firebaseToken = await _firebaseUser?.getIdToken();
+      final firebaseToken = await _firebaseUser?.getIdToken(true);
 
       // POST token tersebut ke backend Golang kamu lewat DioClient
       final response = await DioClient.instance.post(
