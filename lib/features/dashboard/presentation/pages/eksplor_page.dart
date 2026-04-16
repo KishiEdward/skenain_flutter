@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/product_provider.dart';
 import '../widgets/eksplor_product.dart';
+import 'product_detail_page.dart';
 
 class EksplorPage extends StatefulWidget {
   const EksplorPage({super.key});
@@ -87,7 +88,7 @@ class _EksplorPageState extends State<EksplorPage> {
           return const Center(child: Text('Katalog masih kosong...'));
         }
 
-        // 3. GridView: Menampilkan 2 kolom produk berdampingan (seperti image_9.png)
+        // 3. GridView: Menampilkan 2 kolom produk berdampingan 
         return GridView.builder(
           padding: const EdgeInsets.all(16),
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -102,8 +103,11 @@ class _EksplorPageState extends State<EksplorPage> {
             return EksplorProductCard(
               product: product,
               onTap: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Klik Grid: ${product.name}')),
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ProductDetailPage(product: product),
+                  ),
                 );
               },
             );
