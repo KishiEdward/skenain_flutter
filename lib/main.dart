@@ -11,6 +11,7 @@ import 'features/auth/presentation/pages/login_page.dart';
 import 'features/auth/presentation/pages/register_page.dart';
 import 'features/auth/presentation/pages/verify_email_page.dart';
 import 'features/dashboard/presentation/pages/dashboard_page.dart';
+import 'features/dashboard/presentation/pages/eksplor_page.dart';
 
 void main() async {
   // Wajib untuk inisialisasi Firebase & Flutter
@@ -49,7 +50,7 @@ class SkienaApp extends StatelessWidget {
         '/login': (context) => const LoginPage(),
         '/register': (context) => const RegisterPage(),
         '/verify-email': (context) => const VerifyEmailPage(),
-        '/dashboard': (context) => const DashboardPage(),
+        '/dashboard': (context) => const EksplorPage(),
       },
     );
   }
