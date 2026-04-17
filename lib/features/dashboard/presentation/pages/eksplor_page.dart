@@ -20,7 +20,6 @@ class _EksplorPageState extends State<EksplorPage> {
     });
   }
 
-  @override
   void _showFilterModal(BuildContext context) {
     showModalBottomSheet(
       context: context,
@@ -59,7 +58,7 @@ class _EksplorPageState extends State<EksplorPage> {
                         vertical: 8,
                       ),
                     ),
-                    value: provider._selectedCategory ?? 'Semua',
+                    value: provider.selectedCategory ?? 'Semua',
                     items:
                         [
                               'Semua',
