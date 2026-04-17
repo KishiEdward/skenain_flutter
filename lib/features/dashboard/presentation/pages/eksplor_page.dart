@@ -21,6 +21,77 @@ class _EksplorPageState extends State<EksplorPage> {
   }
 
   @override
+  void _showFilterModal(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) {
+        return Consumer<ProductProvider>(
+          builder: (context, provider, child) {
+            return Padding(
+              padding: const EdgeInsets.all(24.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Filter Pencarian',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 20),
+                  const Text(
+                    'Pilih Kategori',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.grey,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  DropdownButtonFormField<String>(
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 8,
+                      ),
+                    ),
+                    value: provider._selectedCategory ?? 'Semua',
+                    items:
+                        [
+                              'Semua',
+                              'Cincin',
+                              'Kalung',
+                              'Gelang',
+                              'Piercing',
+                              'Aksesoris',
+                            ]
+                            .map(
+                              (kategori) => DropdownMenuItem(
+                                value: kategori,
+                                child: Text(kategori),
+                              ),
+                            )
+                            .toList(),
+                    onChanged: (value) {
+                      provider.setCategory(value);
+                      Navigator.pop(context);
+                    },
+                  ),
+                  const SizedBox(height: 20),
+                ],
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey.shade50,
@@ -56,7 +127,9 @@ class _EksplorPageState extends State<EksplorPage> {
         actions: [
           IconButton(
             icon: Icon(Icons.tune, color: Colors.grey.shade700),
-            onPressed: () {},
+            onPressed: () {
+              _showFilterModal(context);
+            },
           ),
           const SizedBox(width: 8),
         ],
@@ -88,7 +161,7 @@ class _EksplorPageState extends State<EksplorPage> {
           return const Center(child: Text('Katalog masih kosong...'));
         }
 
-        // 3. GridView: Menampilkan 2 kolom produk berdampingan 
+        // 3. GridView: Menampilkan 2 kolom produk berdampingan
         return GridView.builder(
           padding: const EdgeInsets.all(16),
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -97,9 +170,9 @@ class _EksplorPageState extends State<EksplorPage> {
             crossAxisSpacing: 12,
             childAspectRatio: 0.65,
           ),
-          itemCount: provider.products.length,
+          itemCount: provider.filteredProducts.length,
           itemBuilder: (context, index) {
-            final product = provider.products[index];
+            final product = provider.filteredProducts[index];
             return EksplorProductCard(
               product: product,
               onTap: () {

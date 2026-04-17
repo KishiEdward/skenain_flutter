@@ -11,6 +11,25 @@ class ProductProvider extends ChangeNotifier {
   List<ProductModel> _products = [];
   bool _isLoading = false;
   String? _errorMessage;
+  String? _selectedCategory;
+  String? get selectedCategory => _selectedCategory;
+
+  List<ProductModel> get filteredProducts {
+    if (_selectedCategory == null || _selectedCategory == 'Semua') {
+      return _products;
+    }
+    return _products
+        .where(
+          (p) => p.category.toLowerCase() == _selectedCategory!.toLowerCase(),
+        )
+        .toList();
+  }
+
+  // 3. Fungsi untuk mengubah kategori saat Dropdown diklik
+  void setCategory(String? category) {
+    _selectedCategory = category;
+    notifyListeners(); // Teriak ke UI untuk menggambar ulang Grid!
+  }
 
   List<ProductModel> get products => _products;
   bool get isLoading => _isLoading;
@@ -19,24 +38,24 @@ class ProductProvider extends ChangeNotifier {
   Future<void> fetchProducts() async {
     _isLoading = true;
     _errorMessage = null;
-    
-    notifyListeners(); 
+
+    notifyListeners();
 
     try {
       final response = await _dio.get(ApiConstants.products);
-      
+
       final List<dynamic> data = response.data['data'] ?? [];
-      
+
       _products = data.map((json) => ProductModel.fromJson(json)).toList();
-      
     } on DioException catch (e) {
-      _errorMessage = 'Gagal memuat produk: ${e.response?.statusCode} - ${e.message}';
+      _errorMessage =
+          'Gagal memuat produk: ${e.response?.statusCode} - ${e.message}';
     } catch (e) {
       _errorMessage = 'Terjadi kesalahan sistem: $e';
     } finally {
       _isLoading = false;
-    
-      notifyListeners(); 
+
+      notifyListeners();
     }
   }
 }
