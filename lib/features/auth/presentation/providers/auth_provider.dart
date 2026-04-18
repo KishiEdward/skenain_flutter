@@ -19,7 +19,7 @@ enum AuthStatus {
 class AuthProvider extends ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn(
-    clientId: dotenv.env['GOOGLE_CLIENT_ID'],
+    clientId: dotenv.env['GOOGLE_CLIENT_ID'] ?? '',
   );
 
   // State Internal
