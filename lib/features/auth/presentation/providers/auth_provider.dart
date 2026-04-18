@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import '../../../../core/constants/api_constants.dart';
@@ -18,8 +19,7 @@ enum AuthStatus {
 class AuthProvider extends ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn(
-    clientId:
-        '638138242347-ie9n5slgj0ftmcbh0hlk2gfcr2hnknru.apps.googleusercontent.com',
+    clientId: dotenv.env['GOOGLE_CLIENT_ID'],
   );
 
   // State Internal
@@ -48,7 +48,7 @@ class AuthProvider extends ChangeNotifier {
       // Jika sudah login dan aman
       _status = AuthStatus.authenticated;
     }
-    notifyListeners(); // Teriakkan perubahan ini ke AuthGuard!
+    notifyListeners();
   }
 
   // Getters (Untuk dibaca oleh UI)

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'features/auth/presentation/providers/auth_provider.dart';
 import 'features/dashboard/presentation/providers/product_provider.dart';
@@ -14,12 +15,11 @@ import 'features/dashboard/presentation/pages/dashboard_page.dart';
 import 'features/dashboard/presentation/pages/eksplor_page.dart';
 
 void main() async {
-  // Wajib untuk inisialisasi Firebase & Flutter
   WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: ".env");
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   runApp(
-    // Mendaftarkan semua Provider di akar aplikasi
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => AuthProvider()),
