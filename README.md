@@ -5,7 +5,16 @@ Skenain adalah platform *fullstack* belanja online yang dikhususkan untuk pencin
 
 ---
 
-## ✨ Fitur Utama
+## Demo Video
+
+Lihat video demo aplikasi untuk melihat semua fitur dalam aksi!
+
+[Watch Full Demo on YouTube](Link_youtube_nanti)
+---
+
+---
+
+## Fitur Utama
 - **Multi-Method Authentication**: Login aman menggunakan Google Sign-In atau Email/Password melalui Firebase.
 - **Email Verification**: Menjaga keamanan akun dengan sistem verifikasi email otomatis.
 - **Dynamic Product Catalog**: Tampilan produk berbasis *Grid* yang responsif.
