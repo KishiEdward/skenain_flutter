@@ -3,6 +3,9 @@
 
 Skenain adalah platform *fullstack* belanja online yang dikhususkan untuk pencinta gaya skena dan alternatif. Aplikasi ini dibangun dengan performa tinggi menggunakan Flutter di sisi *frontend* dan Go (Golang) di sisi *backend*.
 
+Nama dev : Dzidan rafi habibie
+NIM      : 1123150045
+
 ---
 
 ## Demo Video
@@ -49,7 +52,7 @@ Pastikan sudah terpasang:
 - MySQL Server (Laragon/XAMPP)
 
 ### 2. Konfigurasi Backend (Go)
-1. Buat database bernama `skenain_db`.
+1. Buat database bernama `skenain`.
 2. Masukkan file `serviceAccountKey.json` dari Firebase ke folder `config/`.
 3. Buat file `.env` di root folder backend:
    ```env
@@ -59,8 +62,9 @@ Pastikan sudah terpasang:
    DB_PASS=
    DB_NAME=skenain_db
    FIREBASE_CREDENTIALS_PATH=config/serviceAccountKey.json
-   PORT=8080 ```
-4. Jalankan server
+   PORT=8080
+4. Download GoLang Backend di [repo ini](https://github.com/KishiEdward/skenain_backend.git)
+5. Jalankan server
     ```go run main.go```
 
 ### 3. Konfigurasi Front-End
