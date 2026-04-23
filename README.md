@@ -51,4 +51,11 @@ Pastikan sudah terpasang:
    DB_PASS=
    DB_NAME=skenain_db
    FIREBASE_CREDENTIALS_PATH=config/serviceAccountKey.json
-   PORT=8080
+   PORT=8080 ```
+4. Jalankan server
+    ```go run main.go```
+
+### 3. Konfigurasi Front-End
+1. Buat file `.env`
+2. Pastikan file `.env` sudah terdaftar di `pubspec.yaml`
+3. Jalankan aplikasi `flutter run`
