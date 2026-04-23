@@ -19,7 +19,7 @@ Lihat video demo aplikasi untuk melihat semua fitur dalam aksi!
 - **Dynamic Product Catalog**: Tampilan produk berbasis *Grid* yang responsif.
 - **Smart Filtering**: Mencari aksesoris berdasarkan kategori (Cincin, Kalung, dll) secara instan.
 - **Product Detail**: Informasi lengkap produk termasuk deskripsi mendalam dan stok *real-time*.
-- **Upcoming Features**: 🛒 Keranjang Belanja, Tab Akun, dan Sistem Checkout Terintegrasi.
+- **Upcoming Features**: Keranjang Belanja, Tab Akun, dan Sistem Checkout Terintegrasi.
 
 ---
 
