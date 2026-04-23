@@ -12,7 +12,7 @@ NIM      : 1123150045
 
 Lihat video demo aplikasi untuk melihat semua fitur dalam aksi!
 
-[Watch Full Demo on YouTube](Link_youtube_nanti)
+[Watch Full Demo on YouTube](https://youtu.be/BlS11I7h-uY)
 
 ---
 
