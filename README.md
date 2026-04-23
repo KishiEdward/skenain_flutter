@@ -10,7 +10,6 @@ Skenain adalah platform *fullstack* belanja online yang dikhususkan untuk pencin
 Lihat video demo aplikasi untuk melihat semua fitur dalam aksi!
 
 [Watch Full Demo on YouTube](Link_youtube_nanti)
----
 
 ---
 
@@ -68,3 +67,35 @@ Pastikan sudah terpasang:
 1. Buat file `.env`
 2. Pastikan file `.env` sudah terdaftar di `pubspec.yaml`
 3. Jalankan aplikasi `flutter run`
+
+---
+
+## 📁 Struktur Folder (Frontend)
+
+```text
+lib/
+├── core/                       # Inti aplikasi yang dipakai secara global
+│   ├── constants/              # Variabel konstan (API url, Warna, Teks)
+│   ├── routes/                 # Konfigurasi perpindahan halaman (AuthGuard)
+│   ├── services/               # Layanan pihak ketiga (Dio, Secure Storage)
+│   └── theme/                  # Pengaturan tema global aplikasi
+│
+├── features/                   # Modul berdasarkan fitur aplikasi
+│   ├── auth/                   # Fitur Autentikasi (Login, Register, Verifikasi)
+│   │   ├── data/               # Model data dan komunikasi API
+│   │   ├── domain/             # Aturan bisnis dan kontrak repository
+│   │   └── presentation/       # Tampilan antarmuka
+│   │       ├── pages/          # Halaman layar penuh (Screen)
+│   │       ├── providers/      # State Management (Logika UI)
+│   │       └── widgets/        # Komponen UI yang bisa dipakai ulang
+│   │
+│   └── dashboard/              # Fitur Katalog & Produk
+│       ├── data/
+│       ├── domain/
+│       └── presentation/
+│           ├── pages/          # Eksplor, Detail, Dashboard
+│           ├── providers/
+│           └── widgets/
+│
+├── firebase_options.dart       # Konfigurasi otomatis Firebase
+└── main.dart                   # Titik masuk utama aplikasi (Entry point)
